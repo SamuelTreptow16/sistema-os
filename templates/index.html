@@ -1,0 +1,76 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ordens de Serviço</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body data-css-impressao="{% static 'css/impressao.css' %}">
+<header>
+  <h1>🔧 Ordens de Serviço</h1>
+  <nav>
+    <button id="tNova" class="on" onclick="aba('nova')">Nova OS</button>
+    <button id="tLista" onclick="aba('lista')">Todas as OS</button>
+  </nav>
+</header>
+
+<main>
+<section id="nova" class="on">
+  <h2>Abrir nova Ordem de Serviço</h2>
+  <form id="f" onsubmit="salvarOS(event)">
+    <fieldset><legend>Cliente</legend><div class="grid">
+      <label>Nome*<input name="cliente_nome" required maxlength="80"></label>
+      <label>Telefone*<input name="cliente_telefone" required maxlength="20" placeholder="(51) 99999-9999"></label>
+      <label>CPF/CNPJ<input name="cliente_documento" maxlength="18"></label>
+    </div></fieldset>
+
+    <fieldset><legend>Equipamento</legend><div class="grid">
+      <label>Equipamento*<input name="equipamento" required maxlength="80" placeholder="Notebook, impressora..."></label>
+      <label>Marca / Modelo<input name="marca_modelo" maxlength="80"></label>
+      <label>Nº de série<input name="numero_serie" maxlength="50"></label>
+      <label class="full">Acessórios entregues<input name="acessorios" maxlength="150" placeholder="Carregador, cabo, bolsa..."></label>
+      <label class="full">Defeito relatado*<textarea name="defeito" required></textarea></label>
+    </div></fieldset>
+
+    <fieldset><legend>Atendimento</legend><div class="grid">
+      <label>Técnico responsável<input name="tecnico" maxlength="60"></label>
+      <label>Prioridade
+        <select name="prioridade">
+          <option value="B">Baixa</option>
+          <option value="M" selected>Média</option>
+          <option value="A">Alta</option>
+        </select>
+      </label>
+      <label>Previsão de entrega<input type="date" name="previsao"></label>
+      <label>Valor estimado (R$)<input type="number" name="valor_estimado" min="0" step="0.01" value="0"></label>
+    </div></fieldset>
+
+    <button class="btn" type="submit">Abrir OS</button>
+    <button class="btn sec" type="reset">Limpar</button>
+    <div id="msg" class="msg"></div>
+  </form>
+</section>
+
+<section id="lista">
+  <h2>Ordens de Serviço</h2>
+  <div class="bar">
+    <input id="busca" placeholder="Buscar por cliente, equipamento ou nº..." oninput="render()">
+    <select id="fStatus" onchange="render()">
+      <option value="">Todos</option>
+      <option value="A">Aberta</option>
+      <option value="E">Em andamento</option>
+      <option value="C">Concluída</option>
+      <option value="X">Cancelada</option>
+    </select>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Nº</th><th>Abertura</th><th>Cliente</th><th>Equipamento</th><th>Status</th><th>Ações</th></tr></thead>
+    <tbody id="tb"></tbody>
+  </table></div>
+</section>
+</main>
+
+<script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
